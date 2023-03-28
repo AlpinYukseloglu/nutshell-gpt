@@ -3,19 +3,14 @@ import Browser from 'webextension-polyfill'
 
 export enum TriggerMode {
   Always = 'always',
-  QuestionMark = 'questionMark',
   Manually = 'manually',
 }
 
 export const TRIGGER_MODE_TEXT = {
-  [TriggerMode.Always]: { title: 'Always', desc: 'ChatGPT is queried on every search' },
-  [TriggerMode.QuestionMark]: {
-    title: 'Question Mark',
-    desc: 'When your query ends with a question mark (?)',
-  },
+  [TriggerMode.Always]: { title: 'Always', desc: 'Nutshell is queried on every search' },
   [TriggerMode.Manually]: {
     title: 'Manually',
-    desc: 'ChatGPT is queried when you manually click a button',
+    desc: 'Nutshell is queried when you manually click a button',
   },
 }
 
@@ -37,10 +32,21 @@ export enum Language {
   Portuguese = 'portuguese',
 }
 
+export const Prompt =
+  'Summarize this text in less than 15 words.\
+ '
+
+export interface SitePrompt {
+  site: string
+  prompt: string
+}
+
 const userConfigWithDefaultValue = {
   triggerMode: TriggerMode.Always,
   theme: Theme.Auto,
   language: Language.Auto,
+  prompt: Prompt,
+  promptOverrides: [] as SitePrompt[],
 }
 
 export type UserConfig = typeof userConfigWithDefaultValue

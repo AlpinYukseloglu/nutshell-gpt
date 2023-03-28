@@ -100,7 +100,8 @@ export class ChatGPTProvider implements Provider {
           },
         ],
         model: modelName,
-        parent_message_id: uuidv4(),
+        parent_message_id: params.parentMessageId || uuidv4(),
+        conversationId: params.conversationId,
       }),
       onMessage(message: string) {
         console.debug('sse message', message)
@@ -125,6 +126,7 @@ export class ChatGPTProvider implements Provider {
               text,
               messageId: data.message.id,
               conversationId: data.conversation_id,
+              parentMessageId: data.parent_message_id,
             },
           })
         }

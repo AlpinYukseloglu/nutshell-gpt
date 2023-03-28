@@ -1,10 +1,12 @@
-import { CssBaseline, GeistProvider, Radio, Select, Text, Toggle, useToasts } from '@geist-ui/core'
-import { capitalize } from 'lodash-es'
+import { Button, CssBaseline, GeistProvider, Radio, Text, useToasts } from '@geist-ui/core'
+import { Plus } from '@geist-ui/icons'
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks'
 import '../base.css'
 import {
   getUserConfig,
   Language,
+  Prompt,
+  SitePrompt,
   Theme,
   TriggerMode,
   TRIGGER_MODE_TEXT,
@@ -12,18 +14,30 @@ import {
 } from '../config'
 import logo from '../logo.png'
 import { detectSystemColorScheme, getExtensionVersion } from '../utils'
+import AddNewPromptModal from './AddNewPromptModal'
+import PromptCard from './PromptCard'
 import ProviderSelect from './ProviderSelect'
 
 function OptionsPage(props: { theme: Theme; onThemeChange: (theme: Theme) => void }) {
   const [triggerMode, setTriggerMode] = useState<TriggerMode>(TriggerMode.Always)
   const [language, setLanguage] = useState<Language>(Language.Auto)
+  const [prompt, setPrompt] = useState<string>(Prompt)
+  const [promptOverrides, setPromptOverrides] = useState<SitePrompt[]>([])
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
+
   const { setToast } = useToasts()
 
   useEffect(() => {
     getUserConfig().then((config) => {
       setTriggerMode(config.triggerMode)
       setLanguage(config.language)
+      setPrompt(config.prompt)
+      setPromptOverrides(config.promptOverrides)
     })
+  }, [])
+
+  const closeModalHandler = useCallback(() => {
+    setModalVisible(false)
   }, [])
 
   const onTriggerModeChange = useCallback(
@@ -57,36 +71,82 @@ function OptionsPage(props: { theme: Theme; onThemeChange: (theme: Theme) => voi
       <nav className="flex flex-row justify-between items-center mt-5 px-2">
         <div className="flex flex-row items-center gap-2">
           <img src={logo} className="w-10 h-10 rounded-lg" />
-          <span className="font-semibold">ChatGPT for Google (v{getExtensionVersion()})</span>
+          <span className="font-semibold">Nutshell(v{getExtensionVersion()})</span>
         </div>
         <div className="flex flex-row gap-3">
-          <a href="https://chatgpt-for-google.canny.io/changelog" target="_blank" rel="noreferrer">
-            Changelog
-          </a>
           <a
-            href="https://github.com/wong2/chat-gpt-google-extension/issues"
+            href="https://github.com/AlpinYukseloglu/nutshell/issues"
             target="_blank"
             rel="noreferrer"
           >
             Feedback
           </a>
-          <a href="https://twitter.com/chatgpt4google" target="_blank" rel="noreferrer">
-            Twitter
-          </a>
-          <a
-            href="https://github.com/wong2/chat-gpt-google-extension"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href="https://github.com/AlpinYukseloglu/nutshell" target="_blank" rel="noreferrer">
             Source code
           </a>
         </div>
       </nav>
-      <main className="w-[500px] mx-auto mt-14">
-        <Text h2>Options</Text>
+      <main className="w-[600px] mx-auto mt-14">
+        <Text h2>Settings</Text>
         <Text h3 className="mt-5">
+          Prompts
+        </Text>
+
+        <PromptCard
+          header={'default'}
+          onSave={(prompt) => updateUserConfig({ prompt })}
+          prompt={prompt}
+        />
+
+        {promptOverrides.map((override, index) => {
+          return (
+            <div key={override.site} className="my-3">
+              <PromptCard
+                header={override.site}
+                prompt={override.prompt}
+                onSave={(newPrompt) => {
+                  const newOverride: SitePrompt = {
+                    site: override.site,
+                    prompt: newPrompt,
+                  }
+                  const newOverrides = promptOverrides.filter((o) => o.site !== override.site)
+                  newOverrides.splice(index, 0, newOverride)
+                  setPromptOverrides(newOverrides)
+                  return updateUserConfig({ promptOverrides: newOverrides })
+                }}
+                onDismiss={() => {
+                  const newOverrides = promptOverrides.filter((_, i) => i !== index)
+                  setPromptOverrides(newOverrides)
+                  return updateUserConfig({ promptOverrides: newOverrides })
+                }}
+              />
+            </div>
+          )
+        })}
+
+        <Button mt={1} type="secondary" width={'100%'} onClick={() => setModalVisible(true)}>
+          <Plus size={16} className="mx-2" />
+          Add Prompt
+        </Button>
+
+        <AddNewPromptModal
+          visible={modalVisible}
+          onClose={closeModalHandler}
+          onSave={({ site, prompt }) => {
+            const newOverride: SitePrompt = {
+              site,
+              prompt,
+            }
+            const newOverrides = promptOverrides.concat([newOverride])
+            setPromptOverrides(newOverrides)
+            return updateUserConfig({ promptOverrides: newOverrides })
+          }}
+        />
+
+        <Text h3 className="mt-8">
           Trigger Mode
         </Text>
+
         <Radio.Group
           value={triggerMode}
           onChange={(val) => onTriggerModeChange(val as TriggerMode)}
@@ -113,36 +173,9 @@ function OptionsPage(props: { theme: Theme; onThemeChange: (theme: Theme) => voi
           })}
         </Radio.Group>
         <Text h3 className="mt-5 mb-0">
-          Language
-        </Text>
-        <Text className="my-1">
-          The language used in ChatGPT response. <span className="italic">Auto</span> is
-          recommended.
-        </Text>
-        <Select
-          value={language}
-          placeholder="Choose one"
-          onChange={(val) => onLanguageChange(val as Language)}
-        >
-          {Object.entries(Language).map(([k, v]) => (
-            <Select.Option key={k} value={v}>
-              {capitalize(v)}
-            </Select.Option>
-          ))}
-        </Select>
-        <Text h3 className="mt-5 mb-0">
           AI Provider
         </Text>
         <ProviderSelect />
-        <Text h3 className="mt-8">
-          Misc
-        </Text>
-        <div className="flex flex-row items-center gap-4">
-          <Toggle initialChecked disabled />
-          <Text b margin={0}>
-            Auto delete conversations generated by search
-          </Text>
-        </div>
       </main>
     </div>
   )
