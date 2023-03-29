@@ -123,7 +123,6 @@ async function run() {
     // running it through ChatGPT, and properly displaying the results.
     if (bodyElement) {
       //  && bodyElement.textContent
-      // TODO: consider increasing this limit from 1500 to 2048
       const bodyInnerText = bodyElement.trim().replace(/\s+/g, ' ').substring(0, 1500) // .textContent
       console.log('Body: ' + bodyInnerText)
       const userConfig = await getUserConfig()
