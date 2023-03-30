@@ -23,8 +23,10 @@ export const config: Record<string, SearchEngine> = {
   },
   github: {
     inputQuery: ["input[name='query']"],
-    bodyQuery: [],
-    sidebarContainerQuery: ['files'],
+    bodyQuery: ['#files'],
+    sidebarContainerQuery: [
+      'div.file-header.d-flex.flex-md-row.flex-column.flex-md-items-center.file-header--expandable.js-file-header.js-skip-tagsearch.sticky-file-header.js-position-sticky.js-position-sticky-stacked[data-path="proto/osmosis/concentrated-liquidity/tx.proto"]',
+    ], // js-diff-progressive-container'],
     appendContainerQuery: [],
   },
 }

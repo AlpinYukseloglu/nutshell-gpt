@@ -1,3 +1,4 @@
+import { Octokit } from '@octokit/rest'
 import { render } from 'preact'
 import '../base.css'
 import { getUserConfig, Theme } from '../config'
@@ -24,8 +25,9 @@ async function mount(question: string, promptSource: string, siteConfig: SearchE
     container.classList.add('gpt-light')
   }
 
-  // This section is mainly for search engine compatibility
+  // TODO: append different data paths to sidebarContainer's to place boxes in different diff files
   const siderbarContainer = getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery)
+  console.log('siderbarContainer: ' + siderbarContainer)
   if (siderbarContainer) {
     siderbarContainer.prepend(container)
   } else {
@@ -84,11 +86,45 @@ async function run() {
   console.debug('Try to Mount ChatGPT on', siteName)
 
   if (siteConfig.bodyQuery) {
-    const bodyElement = getPossibleElementByQuerySelector(siteConfig.bodyQuery)
+    // const bodyElement = getPossibleElementByQuerySelector(siteConfig.bodyQuery)
+    // const bodyElement = 'I love pineapples'
+
+    // Extract repo owner and name from URL
+    const currentUrl = window.location.href
+    const url_parts = currentUrl.split('/')
+    const owner = url_parts[3]
+    const repo = url_parts[4]
+    const pr_number = Number(url_parts[6])
+    const bodyElement = 'The best repo is ' + owner + '/' + repo + '/' + pr_number
+
+    // Get diff
+    const octokit = new Octokit()
+    const { data: diff } = await octokit.rest.pulls.get({
+      owner,
+      repo,
+      pull_number: pr_number,
+      mediaType: {
+        format: 'diff',
+      },
+    })
+
+    // Generate prompt
+    console.log('Diff: ' + diff)
+
+    // Split diff by file
+
+    // TODO: add this file/data path as a parameter to `mount` and turn the rest into a for loop between all these elements.
+    // The goal should be to mount a prompt for each file's diff on that file's respective header.
+    // Then, figure out CSS so it doesn't look horrible.
+
     console.debug('bodyElement', bodyElement)
 
-    if (bodyElement && bodyElement.textContent) {
-      const bodyInnerText = bodyElement.textContent.trim().replace(/\s+/g, ' ').substring(0, 1500)
+    // Note: by this point, the prompt should be finalized. The rest of the work is on cleaning it up,
+    // running it through ChatGPT, and properly displaying the results.
+    if (bodyElement) {
+      //  && bodyElement.textContent
+      // TODO: consider increasing this limit from 1500 to 2048
+      const bodyInnerText = bodyElement.trim().replace(/\s+/g, ' ').substring(0, 1500) // .textContent
       console.log('Body: ' + bodyInnerText)
       const userConfig = await getUserConfig()
 
@@ -100,13 +136,7 @@ async function run() {
 
       mount(question + bodyInnerText, promptSource, siteConfig)
     }
-  } else {
-    mount('Repeat "Was not provided a proper body query."', 'failed', siteConfig)
   }
-
-  // Non-scrape version:
-  // Generate prompt using github api, regex etc.
-  // Pass the prompt into mount. Likely can just remove siteConfig as a parameter as it's an abstraction for scraping.
 }
 
 run()

@@ -6,6 +6,10 @@ export function getPossibleElementByQuerySelector<T extends Element>(
   for (const query of queryArray) {
     const element = document.querySelector(query)
     if (element) {
+      console.log('number of classes for query: ' + element.classList.length)
+    }
+
+    if (element) {
       return element as T
     }
   }
