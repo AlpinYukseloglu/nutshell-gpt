@@ -25,7 +25,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://arxiv.org/*"
+        "https://arxiv.org/*",
+        "https://github.com/*/pull/*/files"
       ],
       "js": ["content-script.js"],
       "css": ["content-script.css"]

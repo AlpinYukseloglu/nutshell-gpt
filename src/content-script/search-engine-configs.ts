@@ -21,4 +21,10 @@ export const config: Record<string, SearchEngine> = {
     sidebarContainerQuery: ['div[class="metatable"]'],
     appendContainerQuery: [],
   },
+  github: {
+    inputQuery: ["input[name='query']"],
+    bodyQuery: [],
+    sidebarContainerQuery: ['files'],
+    appendContainerQuery: [],
+  },
 }

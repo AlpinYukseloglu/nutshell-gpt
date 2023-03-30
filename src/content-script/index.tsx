@@ -24,6 +24,7 @@ async function mount(question: string, promptSource: string, siteConfig: SearchE
     container.classList.add('gpt-light')
   }
 
+  // This section is mainly for search engine compatibility
   const siderbarContainer = getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery)
   if (siderbarContainer) {
     siderbarContainer.prepend(container)
@@ -31,6 +32,7 @@ async function mount(question: string, promptSource: string, siteConfig: SearchE
     container.classList.add('sidebar-free')
     const appendContainer = getPossibleElementByQuerySelector(siteConfig.appendContainerQuery)
     if (appendContainer) {
+      // TODO: potentially swap these for github so box is above files?
       appendContainer.appendChild(container)
     }
   }
@@ -98,7 +100,13 @@ async function run() {
 
       mount(question + bodyInnerText, promptSource, siteConfig)
     }
+  } else {
+    mount('Repeat "Was not provided a proper body query."', 'failed', siteConfig)
   }
+
+  // Non-scrape version:
+  // Generate prompt using github api, regex etc.
+  // Pass the prompt into mount. Likely can just remove siteConfig as a parameter as it's an abstraction for scraping.
 }
 
 run()
