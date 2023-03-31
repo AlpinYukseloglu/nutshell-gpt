@@ -2,63 +2,38 @@
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/AlpinYukseloglu/nutshell-gpt/pre-release-build.yml)
 [![Twitter Follow](https://img.shields.io/twitter/follow/0xalpo?style=social)](https://twitter.com/0xalpo)
-![License](https://img.shields.io/github/license/wong2/chatgpt-google-extension)
+![License](https://img.shields.io/github/license/AlpinYukseloglu/nutshell-gpt)
 
-### Notice (2023-02-20)
+## Overview
+NutshellGPT is a browser extension that gives one-line summaries of PR diffs.
 
-As this extension has been acquired, this code repository will no longer be updated from now on.
+It passes rich diffs to ChatGPT with tailored prompts to generate concise and useful summaries of diffs for individual files to minimize the cost of context switching for reviewers.
 
-**My new project:**
-[ChatHub: All-in-one chatbot client](https://github.com/chathub-dev/chathub)
+### Features
+- Plugs directly into ChatGPT
+- Prompts can be tweaked
+- Diff formatting is optimized for ChatGPT-readability (significantly better than just copy-pasting directly)
+- Many quality of life additions and performance optimizations
+## Example Usage
+### Screenshot Before Summary
 
----
+![Screenshot](screenshots/extension-before-summary.png?raw=true)
 
-A browser extension to display ChatGPT response alongside Google (and other search engines) results
+### Screenshot After Summary
 
-[Install from Chrome Web Store](https://chatgpt4google.com/chrome?utm_source=github)
+![Screenshot](screenshots/extension-after-summary.png?raw=true)
 
-[Install from Mozilla Add-on Store](https://chatgpt4google.com/firefox?utm_source=github)
+## Installation
+```
+git clone https://github.com/AlpinYukseloglu/nutshell-gpt.git
+cd nutshell-gpt
+npm install && npm run build
+```
 
-[Changelog](https://chatgpt-for-google.canny.io/changelog)
+## Loading into Chrome
+1. Go to `chrome://extensions`
+2. Open `Load Unpacked` on the top left
+3. Pass in the `build/chromium/` directory
 
-## Supported Search Engines
-
-Google Chrome, DuckDuckGo (WIP), Brave (WIP)
-
-## Screenshot
-
-![Screenshot](screenshots/extension.png?raw=true)
-
-## Features
-
-- Supports all popular search engines
-- Supports the official OpenAI API
-- Supports ChatGPT Plus
-- Markdown rendering
-- Code highlights
-- Dark mode
-- Provide feedback to improve ChatGPT
-- Copy to clipboard
-- Custom trigger mode
-- Switch languages
-
-## Troubleshooting
-
-### How to make it work in Brave
-
-![Screenshot](screenshots/brave.png?raw=true)
-
-Disable "Prevent sites from fingerprinting me based on my language preferences" in `brave://settings/shields`
-
-### How to make it work in Opera
-
-![Screenshot](screenshots/opera.png?raw=true)
-
-Enable "Allow access to search page results" in the extension management page
-
-## Build from source
-
-1. Clone the repo
-2. Install dependencies with `npm`
-3. `npm run build`
-4. Load `build/chromium/` or `build/firefox/` directory to your browser
+## Acknowledgements
+Base logic for integrating ChatGPT into a Chrome extension is from [ChatGPT for Google](https://github.com/wong2/chatgpt-google-extension).
