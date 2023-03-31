@@ -30,16 +30,14 @@ async function mount(
     container.classList.add('gpt-light')
   }
 
-  // TODO: append different data paths to sidebarContainer's to place boxes in different diff files
   const siderbarContainer = getPossibleElementByQuerySelector(elementToMountOn)
-  console.log('siderbarContainer: ' + siderbarContainer)
+  console.debug('siderbarContainer: ' + siderbarContainer)
   if (siderbarContainer) {
     siderbarContainer.prepend(container)
   } else {
     container.classList.add('sidebar-free')
     const appendContainer = getPossibleElementByQuerySelector(siteConfig.appendContainerQuery)
     if (appendContainer) {
-      // TODO: potentially swap these for github so box is above files?
       appendContainer.appendChild(container)
     }
   }
@@ -157,23 +155,20 @@ async function run() {
     const diff = response.data as unknown as string
 
     // Generate prompt
-    console.log('Diff: ' + diff)
-
-    // TODO: consider rate limiting using response.changed_files (number of files changed)
+    console.debug('Diff: ' + diff)
 
     // Extract file paths and split diff by file
     const filePaths = extractFilePathsFromDiff(diff)
-    // console.log('First file diff: ' + filePaths[0]);
-    // console.log('All file diffs: ' + filePaths);
+    console.debug('First file diff: ' + filePaths[0])
+    console.debug('All file diffs: ' + filePaths)
 
     const fileDiffs = splitDiffIntoFiles(diff)
-    // console.log('First file diff: ' + fileDiffs[0]);
-    // console.log('All file diffs: ' + fileDiffs);
+    console.debug('First file diff: ' + fileDiffs[0])
+    console.debug('All file diffs: ' + fileDiffs)
 
     // Get all elements relating to changed files
-    // TODO: make this work with github's dynamically loaded pages
     const elementsWithDiffPrefix = document.querySelectorAll('[id^="diff-"]')
-    console.log('Number of elements found: ' + elementsWithDiffPrefix.length)
+    console.debug('Number of elements found: ' + elementsWithDiffPrefix.length)
 
     const elementIds: string[] = []
     const dataPaths: string[] = []
@@ -182,37 +177,33 @@ async function run() {
       if (diffHtmlElement) {
         const dataPath = diffHtmlElement.dataset.path
         if (dataPath) {
-          console.log('current element ID: ' + element.id)
+          console.debug('current element ID: ' + element.id)
           elementIds.push(element.id)
           dataPaths.push(dataPath)
         }
       }
     })
 
-    console.log('All file paths: ' + dataPaths)
+    console.debug('All file paths: ' + dataPaths)
 
-    console.log('Second file path: ' + dataPaths[1])
-    console.log('Second extracted file path: ' + filePaths[1])
-    console.log('Corresponding diff for second file: ' + fileDiffs[1])
-    console.log('Corresponding ID for second file: ' + elementIds[1])
+    console.debug('Second file path: ' + dataPaths[1])
+    console.debug('Second extracted file path: ' + filePaths[1])
+    console.debug('Corresponding diff for second file: ' + fileDiffs[1])
+    console.debug('Corresponding ID for second file: ' + elementIds[1])
 
     // Note: by this point, the prompt should be finalized. The rest of the work is on cleaning it up,
     // running it through ChatGPT, and properly displaying the results.
     const normalizedFilePath = filePaths[1].trim().replace(/\r\n/g, '\n')
     const normalizedDataPath = dataPaths[1].trim().replace(/\r\n/g, '\n')
 
-    console.log(
+    console.debug(
       'extracted file path matches element file path: ' + normalizedFilePath + normalizedDataPath,
     )
-    console.log(normalizedFilePath[1] === normalizedDataPath[1])
+    console.debug(normalizedFilePath[1] === normalizedDataPath[1])
 
-    // TODO: ensure element id length is same as data path length and that both are less than diff array length (ideally same)
     for (let i = 0; i < elementIds.length; i++) {
       const bodyElement = fileDiffs[i]
       if (bodyElement) {
-        //  && bodyElement.textContent
-        // const bodyInnerText = bodyElement.trim().replace(/\s+/g, ' ').substring(0, 1500) // .textContent
-        // console.log('Body: ' + bodyInnerText)
         if (!addedFiles.includes(elementIds[i])) {
           addedFiles.push(elementIds[i])
           const userConfig = await getUserConfig()
@@ -222,7 +213,7 @@ async function run() {
           )
           const question = found?.prompt ?? userConfig.prompt
           const promptSource = found?.site ?? 'default'
-          console.log('element mounted on: ' + ('#' + elementIds[i]))
+          console.debug('element mounted on: ' + ('#' + elementIds[i]))
           const elementToMountOn: string[] = ['#' + elementIds[i]]
 
           mount(question + bodyElement, promptSource, siteConfig, elementToMountOn)
