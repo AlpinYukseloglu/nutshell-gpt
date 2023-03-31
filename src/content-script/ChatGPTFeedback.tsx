@@ -1,6 +1,6 @@
-import { ThumbsdownIcon, ThumbsupIcon, CopyIcon, CheckIcon } from '@primer/octicons-react'
-import { memo, useCallback, useState } from 'react'
+import { CheckIcon, CopyIcon, ThumbsdownIcon, ThumbsupIcon } from '@primer/octicons-react'
 import { useEffect } from 'preact/hooks'
+import { memo, useCallback, useState } from 'react'
 import Browser from 'webextension-polyfill'
 
 interface Props {
@@ -65,16 +65,16 @@ function ChatGPTFeedback(props: Props) {
         onClick={clickThumbsUp}
         className={action === 'thumbsUp' ? 'gpt-feedback-selected' : undefined}
       >
-        <ThumbsupIcon size={14} />
+        <ThumbsupIcon size={12} />
       </span>
       <span
         onClick={clickThumbsDown}
         className={action === 'thumbsDown' ? 'gpt-feedback-selected' : undefined}
       >
-        <ThumbsdownIcon size={14} />
+        <ThumbsdownIcon size={12} />
       </span>
       <span onClick={clickCopyToClipboard}>
-        {copied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
+        {copied ? <CheckIcon size={12} /> : <CopyIcon size={14} />}
       </span>
     </div>
   )

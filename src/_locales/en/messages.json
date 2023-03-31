@@ -1,8 +1,8 @@
 {
   "appName": {
-    "message": "Nutshell"
+    "message": "NutshellGPT"
   },
   "appDesc": {
-    "message": "Display ChatGPT response alongside search engine results"
+    "message": "One-click summaries of file diffs on Github pull requests."
   }
 }

@@ -7,7 +7,7 @@ export enum TriggerMode {
 }
 
 export const TRIGGER_MODE_TEXT = {
-  [TriggerMode.Always]: { title: 'Always', desc: 'Nutshell is queried on every search' },
+  // [TriggerMode.Always]: { title: 'Always', desc: 'Nutshell is queried on every search' },
   [TriggerMode.Manually]: {
     title: 'Manually',
     desc: 'Nutshell is queried when you manually click a button',
@@ -33,7 +33,11 @@ export enum Language {
 }
 
 export const Prompt =
-  'Summarize this text in less than 15 words.\
+  'Explain what this diff changes in one sentence.\n\
+  Your sentence must start with a verb in the third-person singular present tense.\n\
+  Your sentence must be at most 25 words.\n\
+  Omit the file type and any other general identifiers for brevity. Do not start your response with "this diff".\n\
+  Note that diffs are incomplete, and that multiple diffs do not always imply that multiple functions were updated.\n\
  '
 
 export interface SitePrompt {
@@ -42,8 +46,8 @@ export interface SitePrompt {
 }
 
 const userConfigWithDefaultValue = {
-  triggerMode: TriggerMode.Always,
-  theme: Theme.Auto,
+  triggerMode: TriggerMode.Manually,
+  theme: Theme.Dark,
   language: Language.Auto,
   prompt: Prompt,
   promptOverrides: [] as SitePrompt[],

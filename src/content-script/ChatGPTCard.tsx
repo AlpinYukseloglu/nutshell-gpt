@@ -1,4 +1,4 @@
-import { SearchIcon } from '@primer/octicons-react'
+import { BeakerIcon } from '@primer/octicons-react'
 import { useState } from 'preact/hooks'
 import { TriggerMode } from '../config'
 import ChatGPTQuery, { QueryStatus } from './ChatGPTQuery'
@@ -12,6 +12,15 @@ interface Props {
 
 function ChatGPTCard(props: Props) {
   const [triggered, setTriggered] = useState(false)
+  const [color, setColor] = useState<string>('#555')
+
+  const handleMouseEnter = () => {
+    setColor('#b6b8ba')
+  }
+
+  const handleMouseLeave = () => {
+    setColor('#555')
+  }
 
   if (props.triggerMode === TriggerMode.Always) {
     return <ChatGPTQuery {...props} />
@@ -19,9 +28,16 @@ function ChatGPTCard(props: Props) {
   if (triggered) {
     return <ChatGPTQuery {...props} />
   }
+  // Original gray: #b6b8ba
   return (
-    <p className="icon-and-text cursor-pointer" onClick={() => setTriggered(true)}>
-      <SearchIcon size="small" /> Ask Nutshell to summarize
+    <p
+      className="icon-and-text cursor-pointer"
+      style={{ color: color }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={() => setTriggered(true)}
+    >
+      <BeakerIcon size={12} /> Summarize changes
     </p>
   )
 }

@@ -67,26 +67,30 @@ function OptionsPage(props: { theme: Theme; onThemeChange: (theme: Theme) => voi
   )
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto padding-50 flex flex-col h-screen">
       <nav className="flex flex-row justify-between items-center mt-5 px-2">
         <div className="flex flex-row items-center gap-2">
           <img src={logo} className="w-10 h-10 rounded-lg" />
-          <span className="font-semibold">Nutshell(v{getExtensionVersion()})</span>
+          <span className="font-semibold">NutshellGPT(v{getExtensionVersion()})</span>
         </div>
         <div className="flex flex-row gap-3">
           <a
-            href="https://github.com/AlpinYukseloglu/nutshell/issues"
+            href="https://github.com/AlpinYukseloglu/nutshell-gpt/issues"
             target="_blank"
             rel="noreferrer"
           >
             Feedback
           </a>
-          <a href="https://github.com/AlpinYukseloglu/nutshell" target="_blank" rel="noreferrer">
+          <a
+            href="https://github.com/AlpinYukseloglu/nutshell-gpt"
+            target="_blank"
+            rel="noreferrer"
+          >
             Source code
           </a>
         </div>
       </nav>
-      <main className="w-[600px] mx-auto mt-14">
+      <main className="flex-col w-full mx-auto mt-14">
         <Text h2>Settings</Text>
         <Text h3 className="mt-5">
           Prompts
@@ -173,7 +177,7 @@ function OptionsPage(props: { theme: Theme; onThemeChange: (theme: Theme) => voi
           })}
         </Radio.Group>
         <Text h3 className="mt-5 mb-0">
-          AI Provider
+          `AI` Provider
         </Text>
         <ProviderSelect />
       </main>
@@ -196,10 +200,14 @@ function App() {
   }, [])
 
   return (
-    <GeistProvider themeType={themeType}>
-      <CssBaseline />
-      <OptionsPage theme={theme} onThemeChange={setTheme} />
-    </GeistProvider>
+    <div className="flex-row">
+      <div className="flex-col">
+        <GeistProvider themeType={themeType}>
+          <CssBaseline />
+          <OptionsPage theme={theme} onThemeChange={setTheme} />
+        </GeistProvider>
+      </div>
+    </div>
   )
 }
 

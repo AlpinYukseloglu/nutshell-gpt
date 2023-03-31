@@ -139,13 +139,13 @@ function ChatGPTQuery(props: Props) {
 
   if (answer) {
     return (
-      <div className="markdown-body gpt-markdown" id="gpt-answer" dir="auto">
+      <div className="markdown-body gpt-markdown text-[#b6b8ba]" id="gpt-answer" dir="auto">
         <div className="gpt-header">
-          <span className="font-bold">Nutshell</span>
+          <span className="font-bold">Summary</span>
           <span className="cursor-pointer leading-[0]" onClick={openOptionsPage}>
-            <GearIcon size={14} />
+            <GearIcon size={12} />
           </span>
-          <span className="mx-2 text-base text-gray-500">{`"${props.promptSource}" prompt is used`}</span>
+          <span className="icon-and-text mx-2 text-gray-500">{`"${props.promptSource}" prompt is used`}</span>
           <ChatGPTFeedback
             messageId={answer.messageId}
             conversationId={answer.conversationId}
@@ -242,7 +242,9 @@ function ChatGPTQuery(props: Props) {
     )
   }
 
-  return <p className="text-[#b6b8ba] animate-pulse">Waiting for ChatGPT summarize...</p>
+  return (
+    <p className="icon-and-text text-[#b6b8ba] animate-pulse">Summarizing changes for file...</p>
+  )
 }
 
 export default memo(ChatGPTQuery)

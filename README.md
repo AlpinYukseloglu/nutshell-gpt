@@ -1,8 +1,7 @@
-# ChatGPT for Google
+# NutshellGPT
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/wong2/chatgpt-google-extension/pre-release-build.yml)
-![Visitors](https://visitor-badge.glitch.me/badge?page_id=wong2.chat-gpt-google-extension&left_color=green&right_color=red)
-[![Twitter Follow](https://img.shields.io/twitter/follow/chatgpt4google?style=social)](https://twitter.com/chatgpt4google)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/AlpinYukseloglu/nutshell-gpt/pre-release-build.yml)
+[![Twitter Follow](https://img.shields.io/twitter/follow/0xalpo?style=social)](https://twitter.com/0xalpo)
 ![License](https://img.shields.io/github/license/wong2/chatgpt-google-extension)
 
 ### Notice (2023-02-20)
@@ -24,7 +23,7 @@ A browser extension to display ChatGPT response alongside Google (and other sear
 
 ## Supported Search Engines
 
-Google, Baidu, Bing, DuckDuckGo, Brave, Yahoo, Naver, Yandex, Kagi, Searx
+Google Chrome, DuckDuckGo (WIP), Brave (WIP)
 
 ## Screenshot
 

@@ -34,7 +34,7 @@ function App() {
         <p className="text-sm font-semibold m-0 ml-1">ChatGPT for Google</p>
         <div className="grow"></div>
         <span className="cursor-pointer leading-[0]" onClick={openOptionsPage}>
-          <GearIcon size={16} />
+          <GearIcon size={12} />
         </span>
       </div>
       {isChrome && !hideShortcutsTipQuery.isLoading && !hideShortcutsTipQuery.data && (
