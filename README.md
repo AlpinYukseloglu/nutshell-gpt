@@ -36,6 +36,3 @@ npm install && npm run build
 3. Pass in the `build/chromium/` directory
 
 From this point on, you should see `Summarize changes` show up on the files page when reviewing PRs!
-
-## Acknowledgements
-Base logic for integrating ChatGPT into a Chrome extension is from [ChatGPT for Google](https://github.com/wong2/chatgpt-google-extension).
