@@ -166,7 +166,9 @@ async function run() {
     console.debug('First file diff: ' + fileDiffs[0])
     console.debug('All file diffs: ' + fileDiffs)
 
-    // Get all elements relating to changed files
+    // Get all elements relating to changed files. Note that this retrieves children
+    // elements as well, which leads to some additional overhead. This overhead is
+    // negligible given the constant and small number of changed files a PR usually has.
     const elementsWithDiffPrefix = document.querySelectorAll('[id^="diff-"]')
     console.debug('Number of elements found: ' + elementsWithDiffPrefix.length)
 
